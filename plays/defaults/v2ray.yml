@@ -1,11 +1,11 @@
 ---
 
-MAIN_DOMAIN: "shrece.net"
+MAIN_DOMAIN: "DOMAIN.COM"
 
 CERTBOT_EMAIL: "test@gmail.com"
 
 V2RAY_CFG_NAME: "Sudoer_VPN_bot"
-V2RAY_CFG_DOMAIN: "cf.sudoer.net"
+V2RAY_CFG_DOMAIN: "scheretest01.DIMAIN.COM"
 V2RAY_CFG_PREDOMAIN: "schere"
 
 V2RAY_PKGS_LIST:
