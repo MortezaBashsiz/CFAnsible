@@ -1,0 +1,105 @@
+---
+
+MAIN_DOMAIN: "shrece.net"
+
+CERTBOT_EMAIL: "test@gmail.com"
+
+V2RAY_CFG_NAME: "Sudoer_VPN_bot"
+V2RAY_CFG_DOMAIN: "cf.sudoer.net"
+V2RAY_CFG_PREDOMAIN: "schere"
+
+V2RAY_PKGS_LIST:
+  - v2ray
+  - jq
+  - uuid
+  - bmon
+
+V2RAY_INSTANCES:
+  - name: v2ray01Sudoer_VPN_bot
+    listen: "127.0.0.1"
+    port: 10801
+    protocol: "vmess"
+    wsurl: "api01"
+    domain: "{{ ansible_hostname }}.{{ MAIN_DOMAIN }}"
+    clients:
+      - level: 1
+        alterId: 0  
+      - level: 1
+        alterId: 0  
+      - level: 1
+        alterId: 0  
+  - name: v2ray02Sudoer_VPN_bot
+    listen: "127.0.0.1"
+    port: 10802
+    protocol: "vmess"
+    wsurl: "api02"
+    domain: "{{ ansible_hostname }}.{{ MAIN_DOMAIN }}"
+    clients:
+      - level: 1
+        alterId: 0  
+      - level: 1
+        alterId: 0  
+      - level: 1
+        alterId: 0  
+
+INPUT_CHAINS:
+  - name: "INPUT_SSH"
+    policy: "ACCEPT"
+    rules:
+      - "-s 0.0.0.0/0 -p tcp --dport 22 -j ACCEPT"
+  - name: "INPUT_WEB"
+    policy: "ACCEPT"
+    rules:
+      - "-s 0.0.0.0/0 -p tcp --dport 80 -j ACCEPT"
+      - "-s 0.0.0.0/0 -p tcp --dport 443 -j ACCEPT"
+
+OUTPUT_CHAINS:
+  - name: "OUTPUT_WEB"
+    policy: "ACCEPT"
+    rules:
+      - "-d 0.0.0.0/0 -p tcp --dport 80 -j ACCEPT"
+      - "-d 0.0.0.0/0 -p tcp --dport 443 -j ACCEPT"
+  - name: "OUTPUT_SSH"
+    policy: "ACCEPT"
+    rules:
+      - "-d 0.0.0.0/0 -p tcp --dport 22 -j ACCEPT"
+
+FORWARD_CHAINS:
+  - name: "FORWARD_DEFAULT"
+    policy: "DROP"
+    rules:
+      - "-s 0.0.0.0/0 -d 0.0.0.0/0 -j DROP"
+
+NGINX_INSTANCES:
+  - domain: "{{ ansible_hostname }}.{{ MAIN_DOMAIN }}"
+    email: "{{ CERTBOT_EMAIL }}"
+    root: /usr/share/nginx/html
+
+SYSCTL_PARAMETERS:
+  - name: "net.ipv4.ip_forward"
+    value: "0"
+  - name: "kernel.randomize_va_space" 	
+    value: "0"
+  - name: "net.core.netdev_max_backlog" 	
+    value: "2500000"
+  - name: "net.core.rmem_max" 	
+    value: "413696000"
+  - name: "net.core.wmem_max"
+    value: "413696000"
+  - name: "net.ipv4.tcp_congestion_control" 	
+    value: "bbr"
+  - name: "net.ipv4.tcp_fin_timeout" 	
+    value: "1"
+  - name: "net.ipv4.tcp_limit_output_bytes" 	
+    value: "13107200"
+  - name: "net.ipv4.tcp_low_latency" 	
+    value: "0"
+  - name: "net.ipv4.tcp_max_tw_buckets" 	
+    value: "45000000"
+  - name: "net.ipv4.tcp_rmem"
+    value: "409600 8738000 413696000"
+  - name: "net.ipv4.tcp_tw_reuse"
+    value: "1"
+  - name: "net.ipv4.tcp_wmem"
+    value: "409600 1638400 413696000"
+

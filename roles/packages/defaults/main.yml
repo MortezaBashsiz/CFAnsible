@@ -1,0 +1,7 @@
+---
+
+PKGS_LIST:
+  - htop
+  - vim
+  - tmux
+

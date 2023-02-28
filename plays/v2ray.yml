@@ -1,0 +1,27 @@
+---
+
+- hosts: v2ray
+  
+  vars_files:
+    - defaults/v2ray.yml
+
+  roles:
+    - role: packages
+      tags:
+        - apt
+    - role: fail2ban
+      tags:
+        - fail2ban
+    - role: sysctl
+      tags:
+        - sysctl
+    - role: iptables
+      tags:
+        - firewall
+        - iptables
+    - role: nginx
+      tags:
+        - nginx
+    - role: v2ray
+      tags:
+        - v2ray

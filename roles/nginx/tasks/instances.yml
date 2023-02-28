@@ -1,0 +1,34 @@
+---
+
+- name: check if www dir exists {{ instance.name }}
+  stat:
+    path: /etc/letsencrypt/live/{{ instance.domain }}/
+  register: cert_file
+
+- name: get certificates
+  shell: |
+    iptables -F
+    systemctl stop nginx
+    certbot certonly --standalone --preferred-challenges http -d {{ instance.domain }} --non-interactive --agree-tos -m {{ instance.email }}
+    systemctl start nginx
+    systemctl restart iptables
+  changed_when: false
+  when: not cert_file.stat.exists
+
+- name: nginx config for {{ instance.domain }}
+  template:
+    src: etc/nginx/specific-conf.d/specific.conf.j2
+    dest: /etc/nginx/specific-conf.d/{{ instance.domain }}-specific.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: nginx config for {{ instance.domain }}
+  template:
+    src: etc/nginx/conf.d/nginx.conf.j2
+    dest: /etc/nginx/conf.d/{{ instance.domain }}.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    reload nginx

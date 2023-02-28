@@ -1,0 +1,47 @@
+server {
+
+    listen 80;
+    server_name gheychi{{ instance.domain }} schere{{ instance.domain }} {{ instance.domain }} ;
+    return 301 https://schere{{ instance.domain }};
+}
+	
+server {
+    gzip on;
+    gzip_disable "msie6";
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_types application/javascript application/rss+xml application/vnd.ms-fontobject application/x-font application/x-font-opentype application/x-font-otf application/x-font-truetype application/x-font-ttf application/x-javascript application/xhtml+xml application/xml font/opentype font/otf font/ttf image/svg+xml image/x-icon text/css text/javascript text/plain text/xml;
+    if ($host !~ ^(gheychi{{ instance.domain }}|schere{{ instance.domain }}|{{ instance.domain }})$ ) {
+        return 444;
+    }
+    if ($request_method !~ ^(GET|HEAD|POST)$ ) {
+        return 444;
+    }
+    listen 443 ssl http2;
+    server_name gheychi{{ instance.domain }} schere{{ instance.domain }} {{ instance.domain }};
+
+    root {{ instance.root }};
+    index index.html;
+    ssl_certificate /etc/letsencrypt/live/{{ instance.domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ instance.domain }}/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/{{ instance.domain }}/chain.pem;
+    access_log /var/log/nginx/{{ instance.domain }}.access.log;
+    error_log /var/log/nginx/{{ instance.domain }}.error.log;
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+	
+   include specific-conf.d/{{ instance.domain }}-specific.conf;
+}
+

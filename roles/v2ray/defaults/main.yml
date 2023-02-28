@@ -1,0 +1,27 @@
+---
+
+V2RAY_PKGS_LIST:
+  - python3-urllib3
+  - v2ray
+  - uuid
+
+V2RAY_CFG_DOMAIN: "adas"
+V2RAY_CFG_PREDOMAIN: "nokhod"
+
+V2RAY_INSTANCES:
+  - name: v2ray01
+    listen: "127.0.0.1"
+    port: 10801
+    protocol: "vmess"
+    wsurl: "/api01"
+    clients:
+      - level: 1
+        alterId: 0  
+  - name: v2ray02
+    listen: "127.0.0.1"
+    port: 10802
+    protocol: "vmess"
+    wsurl: "/api02"
+    clients:
+      - level: 1
+        alterId: 0  
