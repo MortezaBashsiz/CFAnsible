@@ -10,7 +10,7 @@ AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
 DynamicUser=true
 NoNewPrivileges=true
 Environment=V2RAY_LOCATION_ASSET=/etc/v2ray
-ExecStart=/usr/bin/v2ray -config /etc/v2ray/{{ instance.name }}.json
+ExecStart=/usr/bin/v2ray -config /etc/v2ray/{{ instance.name }}_{{ V2RAY_CFG_NAME }}.json
 Restart=on-failure
 LimitNOFILE=65535
 

@@ -5,7 +5,7 @@ MAIN_DOMAIN: "DOMAIN.COM"
 CERTBOT_EMAIL: "test@gmail.com"
 
 V2RAY_CFG_NAME: "Sudoer_VPN_bot"
-V2RAY_CFG_DOMAIN: "scheretest01.DIMAIN.COM"
+V2RAY_CFG_DOMAIN: "scheretest01.DOMAIN.COM"
 V2RAY_CFG_PREDOMAIN: "schere"
 
 V2RAY_PKGS_LIST:
@@ -15,30 +15,13 @@ V2RAY_PKGS_LIST:
   - bmon
 
 V2RAY_INSTANCES:
-  - name: v2ray01Sudoer_VPN_bot
+  - name: v2ray01
     listen: "127.0.0.1"
     port: 10801
     protocol: "vmess"
     wsurl: "api01"
     domain: "{{ ansible_hostname }}.{{ MAIN_DOMAIN }}"
     clients:
-      - level: 1
-        alterId: 0  
-      - level: 1
-        alterId: 0  
-      - level: 1
-        alterId: 0  
-  - name: v2ray02Sudoer_VPN_bot
-    listen: "127.0.0.1"
-    port: 10802
-    protocol: "vmess"
-    wsurl: "api02"
-    domain: "{{ ansible_hostname }}.{{ MAIN_DOMAIN }}"
-    clients:
-      - level: 1
-        alterId: 0  
-      - level: 1
-        alterId: 0  
       - level: 1
         alterId: 0  
 
